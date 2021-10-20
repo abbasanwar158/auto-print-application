@@ -1,3 +1,4 @@
+const { disableNotifications } = require('laravel-mix');
 const mix = require('laravel-mix');
 
 /*
@@ -10,6 +11,8 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+
+disableNotifications();
 
 mix.js('resources/js/app.js', 'public/js')
     .react()
