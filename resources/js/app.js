@@ -15,7 +15,7 @@ require('./bootstrap');
  */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Routes from './components/Routes'
+import Routes from './containers/Routes'
 import { BrowserRouter as Router } from 'react-router-dom';
 
 if (document.getElementById('app')) {
