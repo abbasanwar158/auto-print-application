@@ -160,16 +160,12 @@ export default function ManageUsers() {
 
 
   useEffect(() => {
-    UsersFun();
-  }, []);
-
-  const UsersFun = () => {
     var usersArr = [];
-    fetch("http://attendance.devbox.co/api/v1/users")
+    fetch("http://127.0.0.1:8000/api/users")
       .then(res => res.json())
       .then(
         (response) => {
-          var data = response.data
+          var data = response
           for (var i = 0; i < data.length; i++) {
             usersArr.push(data[i])
           }
@@ -179,6 +175,13 @@ export default function ManageUsers() {
           console.log("error", error)
         }
       )
+  }, []);
+
+
+  const deleteData = (e) => {
+    var userId = e.target.value
+    fetch(`http://127.0.0.1:8000/api/user/delete/${userId}`, { method: 'DELETE' })
+      .then(() => alert('Delete successful'));
   }
 
   return (
@@ -356,16 +359,7 @@ export default function ManageUsers() {
                       <button
                         value={row.id}
                         className={styles.deleteBtn}
-                        onClick={(e) => {
-                          var userId = e.target.value
-                          for (var i = 0; i < usersData.length; i++) {
-                            var tempId = usersData[i].id
-                            if (tempId == userId) {
-                              setIndex(i);
-                            }
-                          }
-                          history.push('/user/edit')
-                        }}
+                        onClick={deleteData}
                       >Delete
                       </button>
                     </TableCell>
