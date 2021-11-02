@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/users', [App\Http\Controllers\api\UserController::class, 'index']);
 Route::post('/user/new', [App\Http\Controllers\api\UserController::class, 'store']);
+Route::get('/user/update/{id}', [App\Http\Controllers\api\UserController::class, 'edit']);
 Route::put('/user/update/{id}', [App\Http\Controllers\api\UserController::class, 'update']);
 Route::delete('/user/delete/{id}', [App\Http\Controllers\api\UserController::class, 'destroy']);
 Route::get('/user/{id}', [App\Http\Controllers\api\UserController::class, 'show']);

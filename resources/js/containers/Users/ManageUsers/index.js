@@ -337,7 +337,7 @@ export default function ManageUsers() {
                   ? usersData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   : usersData
                 ).map((row) => (
-                  <TableRow>
+                  <TableRow key={row.id}>
                     <TableCell className={styles.nameCells}>{row.username}</TableCell>
                     <TableCell className={styles.subCells}>{row.isAdmin}</TableCell>
                     <TableCell className={styles.subCells}>

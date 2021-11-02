@@ -184,8 +184,10 @@ export default function Sidebar() {
             {
               attendanceSubMenu.map((x, i) => {
                 return (
-                  <div className={styles.dashboardSubMenuDiv}
-                    onClick={() => {
+                  <div 
+                  className={styles.dashboardSubMenuDiv}
+                  key={x}
+                  onClick={() => {
                       history.push(`${attendanceUrl[i]}`)
                       setModalOpen(false)
                     }}
@@ -231,8 +233,10 @@ export default function Sidebar() {
             {
               leavesSubMenu.map((x, i) => {
                 return (
-                  <div className={styles.dashboardSubMenuDiv}
-                    onClick={() => {
+                  <div 
+                  className={styles.dashboardSubMenuDiv}
+                  key={x}
+                  onClick={() => {
                       history.push(`${leavesUrl[i]}`)
                       setModalOpen(false)
                     }}
@@ -275,11 +279,13 @@ export default function Sidebar() {
             {
               employeesSubMenu.map((x, i) => {
                 return (
-                  <div className={styles.dashboardSubMenuDiv}
-                    onClick={() => {
-                      history.push(`${employeesUrl[i]}`)
-                      setModalOpen(false)
-                    }}
+                  <div 
+                  className={styles.dashboardSubMenuDiv}
+                  key={x}
+                  onClick={() => {
+                    history.push(`${employeesUrl[i]}`)
+                    setModalOpen(false)
+                  }}
                   >
                     <SVG
                       className={styles.dashboardSvgSubMenu}
@@ -319,8 +325,10 @@ export default function Sidebar() {
             {
               holidaysSubMenu.map((x, i) => {
                 return (
-                  <div className={styles.dashboardSubMenuDiv}
-                    onClick={() => {
+                  <div 
+                  className={styles.dashboardSubMenuDiv}
+                  key={x}
+                  onClick={() => {
                       history.push(`${holidaysUrl[i]}`)
                       setModalOpen(false)
                     }}

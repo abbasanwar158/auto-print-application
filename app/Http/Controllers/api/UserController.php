@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -16,11 +17,6 @@ class UserController extends Controller
     public function index()
     {
         return User::all();
-        // $data = User::all();
-        // return $data;
-        // $data = User::get()->toJson(JSON_PRETTY_PRINT);
-        // return response($data, 200);
-
     }
 
     /**
@@ -40,14 +36,17 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'username'=>'required',
-            'password'=>'required',
-            'is_admin'=>'required',
 
+    { 
+        $encrypted = Hash::make($request->password);
+        $data = User::create([
+            'username' => $request->username,
+            'password_digest' => $encrypted,
+            'name' => $request->name,
+            'is_admin' => $request->is_admin,
+            'created_at' => $request->created_at,
+            'updated_at' => $request->updated_at
         ]);
-       return User::create($request->all());
     }
 
     /**
@@ -67,9 +66,10 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        //
+        $data = User::find($id);
+        return $data;
     }
 
     /**
@@ -81,9 +81,21 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data=User::find($id);
-        $data->update($request->all());
-        return $data;
+        echo($id);
+        echo"<br>";
+        echo $request;
+        echo"<br>";
+        echo ($request->username);
+        echo"<br>";
+        $data = User::find($id);
+        echo($data);
+        $encrypted = Hash::make($request->password);
+        $data->update([
+            'username' => $request->username,
+            'password_digest' => $encrypted,
+            'name' => $request->name,
+            'is_admin' => $request->is_admin        
+        ]);
     }
 
     /**
