@@ -36,8 +36,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-
-    { 
+    {
         $encrypted = Hash::make($request->password);
         $data = User::create([
             'username' => $request->username,
@@ -81,14 +80,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        echo($id);
-        echo"<br>";
-        echo $request;
-        echo"<br>";
-        echo ($request->username);
-        echo"<br>";
         $data = User::find($id);
-        echo($data);
         $encrypted = Hash::make($request->password);
         $data->update([
             'username' => $request->username,

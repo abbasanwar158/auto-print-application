@@ -113,6 +113,9 @@ export default function ManageUsers() {
   const [values, setValues] = useState({ showPassword: false, });
   const [valuesConfirm, setValuesConfirm] = useState({ showPasswordConfirm: false, });
   const { usersData, setUsersData, setIndex } = useContext(RootContext);
+  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
+  const [isAdmin, setIsAdmin] = useState('');
   const history = useHistory();
 
   const ITEM_HEIGHT = 48;
@@ -125,6 +128,16 @@ export default function ManageUsers() {
       },
     },
   };
+
+  const usernameChange = (event) => {
+    setUsername(event.target.value)
+  }
+
+  const nameChange = (event) => {
+    setName(event.target.value)
+  }
+
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -160,6 +173,10 @@ export default function ManageUsers() {
 
 
   useEffect(() => {
+    getUserData();
+  }, []);
+
+  const getUserData = () => {
     var usersArr = [];
     fetch("http://127.0.0.1:8000/api/users")
       .then(res => res.json())
@@ -175,20 +192,62 @@ export default function ManageUsers() {
           console.log("error", error)
         }
       )
-  }, []);
-
+  }
 
   const deleteData = (e) => {
     var userId = e.target.value
     fetch(`http://127.0.0.1:8000/api/user/delete/${userId}`, { method: 'DELETE' })
       .then(() => alert('Delete successful'));
+    getUserData();
   }
+
+  const isAdminCheck = (event) => {
+    var checkValue = event.currentTarget.checked;
+    if(checkValue){
+      setIsAdmin(true);
+    }
+  }
+
+  const newUser = () => {
+    var password = values.password;
+    var confirmPass = valuesConfirm.password;
+    if(password == confirmPass){
+      fetch('http://127.0.0.1:8000/api/user/new', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password,
+            is_admin: isAdmin,
+            created_at: '2021-11-04 05:21:33.00',
+            updated_at: '2021-11-04 05:21:33.00',
+            name: name
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+      getUserData();
+    }
+    else{
+      alert('Passwords must be same');
+    }
+
+  }
+  
 
   return (
     <>
       <div className={styles.breadCrumbsContainer}>
         <div className={styles.breadCrumbsSubContainer}>
-          <SVG className={styles.dashboardSvg} src={`${process.env.PUBLIC_URL}/images/holidays.svg`} />
+          <SVG className={styles.dashboardSvg} src="" />
           <span className={styles.breadCrumbsSlash}>/</span>
           <span className={styles.breadCrumbsSpan}>Users</span>
         </div>
@@ -211,6 +270,8 @@ export default function ManageUsers() {
                   variant="outlined"
                   size="small"
                   placeholder="Enter Your Email"
+                  value={username}
+                  onChange={usernameChange}
                 />
               </FormControl>
             </Grid>
@@ -229,6 +290,8 @@ export default function ManageUsers() {
                   variant="outlined"
                   size="small"
                   placeholder="Enter Your Name"
+                  value={name}
+                  onChange={nameChange}
                 />
               </FormControl>
             </Grid>
@@ -307,6 +370,7 @@ export default function ManageUsers() {
                   control={<Checkbox color="primary" />}
                   label="Check if admin"
                   labelPlacement="end"
+                  onChange={isAdminCheck}
                 />
               </FormControl>
             </Grid>
@@ -316,7 +380,7 @@ export default function ManageUsers() {
         <Grid item xs={12}>
           <Grid container spacing={1} className={styles.gridSubItems} >
             <Grid item xs={12} sm={4} className={styles.fieldGrid}>
-              <Button variant="contained" color="primary" className={styles.saveButton}>
+              <Button onClick={newUser} variant="contained" color="primary" className={styles.saveButton}>
                 Register
               </Button>
             </Grid>
