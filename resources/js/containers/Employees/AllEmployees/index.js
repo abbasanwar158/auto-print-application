@@ -115,11 +115,11 @@ export default function AllEmployees() {
 
   const employeeNamesFun = () => {
     var employeeNamesArr = [];
-    fetch("http://attendance.devbox.co/api/v1/employees")
+    fetch("http://127.0.0.1:8000/api/employees")
       .then(res => res.json())
       .then(
         (response) => {
-          var data = response.data.filter((x) => x.active)
+          var data = response.filter((x) => x.active)
           for (var i = 0; i < data.length; i++) {
             employeeNamesArr.push(data[i])
           }

@@ -137,7 +137,6 @@ export default function ManageUsers() {
     setName(event.target.value)
   }
 
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -202,10 +201,7 @@ export default function ManageUsers() {
   }
 
   const isAdminCheck = (event) => {
-    var checkValue = event.currentTarget.checked;
-    if(checkValue){
-      setIsAdmin(true);
-    }
+      setIsAdmin(event.currentTarget.checked);
   }
 
   const newUser = () => {

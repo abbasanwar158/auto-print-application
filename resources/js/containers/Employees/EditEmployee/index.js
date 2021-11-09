@@ -23,6 +23,37 @@ export default function NewEmployee() {
   const [description, setDescription] = useState('')
   const history = useHistory();
 
+  const handleChangeStatus = (event) => {
+    setStatus(event.target.value);
+  };
+
+  const handleChangeExId = (event) => {
+    setExternalId(event.target.value);
+  };
+
+  const handleChangeName = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleChangeDesignation = (event) => {
+    setDesignation(event.target.value);
+  };
+
+  const handleChangeCnic = (event) => {
+    setCnic(event.target.value);
+  };
+
+  const handleChangeEmail = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handleChangeDate = (event) => {
+    setJoiningDate(event.target.value);
+  };
+
+  const handleChangeDescription = (event) => {
+    setDescription(event.target.value);
+  };
 
   const Chevron = () => {
     return (
@@ -43,12 +74,41 @@ export default function NewEmployee() {
     setDescription(employeeDataForEdit.description)
     var statusValue = employeeDataForEdit.active
     if (statusValue) {
-      setStatus('Active')
+      setStatus(1)
     }
     else {
-      setStatus('Not Active')
+      setStatus(0)
     }
   }, []);
+
+  const editEmployee = () => {
+    fetch(`http://127.0.0.1:8000/api/employee/update/${employeesData[index].id}`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          employee_external_id: externalId,
+          name: name,
+          active: status,
+          created_at: '2021-11-04 05:21:33.00',
+          updated_at: '2021-11-04 05:21:33.00',
+          cnic: cnic,
+          email: email,
+          designation: designation,
+          joining_date: joiningDate,
+          description: description,
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
 
   return (
     <>
@@ -77,6 +137,7 @@ export default function NewEmployee() {
                     type="number"
                     variant="outlined"
                     value={externalId}
+                    onChange={handleChangeExId}
                   >
                   </TextField>
                 </FormControl>
@@ -96,6 +157,7 @@ export default function NewEmployee() {
                     type="text"
                     variant="outlined"
                     value={name}
+                    onChange={handleChangeName}
                   >
                   </TextField>
                 </FormControl>
@@ -115,6 +177,7 @@ export default function NewEmployee() {
                     type="text"
                     variant="outlined"
                     value={designation}
+                    onChange={handleChangeDesignation}
                   >
                   </TextField>
                 </FormControl>
@@ -134,6 +197,7 @@ export default function NewEmployee() {
                     type="text"
                     variant="outlined"
                     value={cnic}
+                    onChange={handleChangeCnic}
                   >
                   </TextField>
                 </FormControl>
@@ -153,6 +217,7 @@ export default function NewEmployee() {
                     type="email"
                     variant="outlined"
                     value={email}
+                    onChange={handleChangeEmail}
                   >
                   </TextField>
                 </FormControl>
@@ -172,6 +237,7 @@ export default function NewEmployee() {
                     defaultValue="2021-01-01"
                     size="small"
                     value={joiningDate}
+                    onChange={handleChangeDate}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -193,6 +259,7 @@ export default function NewEmployee() {
                     type="text"
                     variant="outlined"
                     value={description}
+                    onChange={handleChangeDescription}
                   >
                   </TextField>
                 </FormControl>
@@ -211,14 +278,15 @@ export default function NewEmployee() {
                     label="Status"
                     variant="outlined"
                     value={status}
+                    onChange={handleChangeStatus}
                     menuprops={{ variant: "menu" }}
                     select
                     SelectProps={{ IconComponent: () => <Chevron /> }}
                   >
-                    <MenuItem value="Active">
+                    <MenuItem value="1">
                       Active
                     </MenuItem>
-                    <MenuItem value="Not Active">
+                    <MenuItem value="0">
                       Not Active
                     </MenuItem>
                   </TextField>
@@ -229,7 +297,7 @@ export default function NewEmployee() {
           <Grid item xs={12}>
             <Grid container spacing={1} className={styles.gridSubItems} >
               <Grid item xs={12} sm={4} className={styles.fieldGrid}>
-                <Button variant="contained" color="primary" className={styles.saveButton}>
+                <Button onClick={editEmployee} variant="contained" color="primary" className={styles.saveButton}>
                   Update
                 </Button>
                 <Button

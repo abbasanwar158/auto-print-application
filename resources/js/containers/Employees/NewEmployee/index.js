@@ -10,10 +10,45 @@ import Grid from '@material-ui/core/Grid';
 
 export default function NewEmployee() {
 
-  const [selectedStatus, setSelectedStatus] = useState('')
+  const [selectedStatus, setSelectedStatus] = useState('');
+  const [externalId, setExternalId] = useState('');
+  const [name, setName] = useState('');
+  const [designation, setDesignation] = useState('');
+  const [cnic, setCnic] = useState('');
+  const [email, setEmail] = useState('');
+  const [joiningDate, setJoiningDate] = useState('');
+  const [description, setDescription] = useState('');
 
   const handleChangeStatus = (event) => {
     setSelectedStatus(event.target.value);
+  };
+
+  const handleChangeExId = (event) => {
+    setExternalId(event.target.value);
+  };
+
+  const handleChangeName = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleChangeDesignation = (event) => {
+    setDesignation(event.target.value);
+  };
+
+  const handleChangeCnic = (event) => {
+    setCnic(event.target.value);
+  };
+
+  const handleChangeEmail = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handleChangeDate = (event) => {
+    setJoiningDate(event.target.value);
+  };
+
+  const handleChangeDescription = (event) => {
+    setDescription(event.target.value);
   };
 
   const Chevron = () => {
@@ -23,6 +58,35 @@ export default function NewEmployee() {
       </span>
     );
   };
+
+  const newEmployee = () => {
+    fetch('http://127.0.0.1:8000/api/employee/new', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          employee_external_id: externalId,
+          name: name,
+          active: selectedStatus,
+          created_at: '2021-11-04 05:21:33.00',
+          updated_at: '2021-11-04 05:21:33.00',
+          cnic: cnic,
+          email: email,
+          designation: designation,
+          joining_date: joiningDate,
+          description: description,
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
 
   return (
     <>
@@ -50,6 +114,8 @@ export default function NewEmployee() {
                     label="Employee external"
                     type="number"
                     variant="outlined"
+                    value={externalId}
+                    onChange={handleChangeExId}
                   >
                   </TextField>
                 </FormControl>
@@ -68,6 +134,8 @@ export default function NewEmployee() {
                     label="Name"
                     type="text"
                     variant="outlined"
+                    value={name}
+                    onChange={handleChangeName}
                   >
                   </TextField>
                 </FormControl>
@@ -86,6 +154,8 @@ export default function NewEmployee() {
                     label="Designation"
                     type="text"
                     variant="outlined"
+                    value={designation}
+                    onChange={handleChangeDesignation}
                   >
                   </TextField>
                 </FormControl>
@@ -104,6 +174,8 @@ export default function NewEmployee() {
                     label="CNIC"
                     type="text"
                     variant="outlined"
+                    value={cnic}
+                    onChange={handleChangeCnic}
                   >
                   </TextField>
                 </FormControl>
@@ -122,6 +194,8 @@ export default function NewEmployee() {
                     label="Email"
                     type="email"
                     variant="outlined"
+                    value={email}
+                    onChange={handleChangeEmail}
                   >
                   </TextField>
                 </FormControl>
@@ -140,6 +214,8 @@ export default function NewEmployee() {
                     variant="outlined"
                     defaultValue="2021-01-01"
                     size="small"
+                    value={joiningDate}
+                    onChange={handleChangeDate}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -160,6 +236,8 @@ export default function NewEmployee() {
                     label="Description"
                     type="text"
                     variant="outlined"
+                    value={description}
+                    onChange={handleChangeDescription}
                   >
                   </TextField>
                 </FormControl>
@@ -183,10 +261,10 @@ export default function NewEmployee() {
                     select
                     SelectProps={{ IconComponent: () => <Chevron /> }}
                   >
-                    <MenuItem value="Half">
+                    <MenuItem value="1">
                       Active
                     </MenuItem>
-                    <MenuItem value="Full">
+                    <MenuItem value="0">
                       Not Active
                     </MenuItem>
                   </TextField>
@@ -197,7 +275,7 @@ export default function NewEmployee() {
           <Grid item xs={12}>
             <Grid container spacing={1} className={styles.gridSubItems} >
               <Grid item xs={12} sm={4} className={styles.fieldGrid}>
-                <Button variant="contained" color="primary" className={styles.saveButton}>
+                <Button onClick={newEmployee} variant="contained" color="primary" className={styles.saveButton}>
                   Save
                 </Button>
                 <Button variant="contained" color="default">
