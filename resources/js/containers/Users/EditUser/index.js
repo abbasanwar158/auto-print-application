@@ -75,6 +75,7 @@ export default function ManageUsers() {
   }
 
   const editUser = () =>{
+    var today = new Date()
     var password = values.password;
     var confirmPass = valuesConfirm.password;
     if(password == confirmPass){
@@ -88,8 +89,8 @@ export default function ManageUsers() {
             username: username,
             password: password,
             is_admin: isAdmin,
-            created_at: '2021-11-04 05:21:33.00',
-            updated_at: '2021-11-04 05:21:33.00',
+            created_at: date,
+            updated_at: date,
             name: name
         })
       })

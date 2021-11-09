@@ -60,6 +60,7 @@ export default function NewEmployee() {
   };
 
   const newEmployee = () => {
+    var today = new Date()
     fetch('http://127.0.0.1:8000/api/employee/new', {
         method: 'POST',
         headers: {
@@ -70,8 +71,8 @@ export default function NewEmployee() {
           employee_external_id: externalId,
           name: name,
           active: selectedStatus,
-          created_at: '2021-11-04 05:21:33.00',
-          updated_at: '2021-11-04 05:21:33.00',
+          created_at: today,
+          updated_at: today,
           cnic: cnic,
           email: email,
           designation: designation,

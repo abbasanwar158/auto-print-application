@@ -142,4 +142,30 @@ class EmployeeController extends Controller
         }
           return response()->json($data);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Employee  $employee
+     * @return \Illuminate\Http\Response
+     */
+    public function editStatus(Request $request, $id)
+    {
+        $data = Employee::find($id);
+        $data->update([
+            'active' => $request->active,
+        ]);
+        if ($data){
+            $res=[
+            'status'=>'1',
+            'msg'=>'success'
+          ];
+          }else{
+            $res=[
+            'status'=>'0',
+            'msg'=>'fail'
+          ];
+        }
+          return response()->json($res);
+    }
 }

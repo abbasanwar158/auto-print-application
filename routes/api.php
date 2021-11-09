@@ -31,3 +31,4 @@ Route::post('/employee/new', [App\Http\Controllers\api\EmployeeController::class
 Route::post('/employee/update/{id}', [App\Http\Controllers\api\EmployeeController::class, 'update']);
 Route::delete('/employee/delete/{id}', [App\Http\Controllers\api\EmployeeController::class, 'destroy']);
 Route::get('/employee/{id}', [App\Http\Controllers\api\EmployeeController::class, 'show']);
+Route::post('employee/edit_status/{id}', [App\Http\Controllers\api\EmployeeController::class, 'editStatus']);
