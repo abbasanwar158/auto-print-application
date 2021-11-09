@@ -28,6 +28,7 @@ export default function ManageUsers() {
   const { usersData, index } = useContext(RootContext);
   const [name, setName] = useState('')
   const [username, setUsername] = useState('')
+  const [isAdmin, setIsAdmin] = useState('');
   const history = useHistory();
 
   const handleChange = (prop) => (event) => {
@@ -61,6 +62,52 @@ export default function ManageUsers() {
     setUsername(userDataForEdit.username)
   }, []);
 
+  const usernameChange = (event) => {
+    setUsername(event.target.value)
+  }
+
+  const nameChange = (event) => {
+    setName(event.target.value)
+  }
+
+  const isAdminCheck = (event) => {
+    setIsAdmin(event.currentTarget.checked);
+  }
+
+  const editUser = () =>{
+    var today = new Date()
+    var password = values.password;
+    var confirmPass = valuesConfirm.password;
+    if(password == confirmPass){
+      fetch(`http://127.0.0.1:8000/api/user/update/${usersData[index].id}`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password,
+            is_admin: isAdmin,
+            created_at: date,
+            updated_at: date,
+            name: name
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+      getUserData();
+    }
+    else{
+      alert('Passwords must be same');
+    }
+  }
+
   return (
     <>
       <div className={styles.breadCrumbsContainer}>
@@ -91,6 +138,7 @@ export default function ManageUsers() {
                   size="small"
                   placeholder="Enter Your Email"
                   value={username}
+                  onChange={usernameChange}
                 />
               </FormControl>
             </Grid>
@@ -110,6 +158,7 @@ export default function ManageUsers() {
                   size="small"
                   placeholder="Enter Your Name"
                   value={name}
+                  onChange={nameChange}
                 />
               </FormControl>
             </Grid>
@@ -188,6 +237,7 @@ export default function ManageUsers() {
                   control={<Checkbox color="primary" />}
                   label="Check if admin"
                   labelPlacement="end"
+                  onChange={isAdminCheck}
                 />
               </FormControl>
             </Grid>
@@ -197,7 +247,7 @@ export default function ManageUsers() {
         <Grid item xs={12}>
           <Grid container spacing={1} className={styles.gridSubItems} >
             <Grid item xs={12} sm={4} className={styles.fieldGrid}>
-              <Button variant="contained" color="primary" className={styles.saveButton}>
+              <Button onClick={editUser} variant="contained" color="primary" className={styles.saveButton}>
                 Update
               </Button>
             </Grid>

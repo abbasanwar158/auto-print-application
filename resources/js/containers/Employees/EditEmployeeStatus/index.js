@@ -30,6 +30,26 @@ export default function EditEmployeeStatus() {
     );
   };
 
+  const statusUpdate = () => {
+    fetch(`http://127.0.0.1:8000/api/employee/edit_status/${selected}`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          active: selectedStatus,
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
   return (
     <>
       <div className={styles.breadCrumbsContainer}>
@@ -62,7 +82,7 @@ export default function EditEmployeeStatus() {
                     SelectProps={{ IconComponent: () => <Chevron /> }}
                   >
                     {ActiveEmployeeNames.map((option) => (
-                      <MenuItem key={option.name} value={option.employee_external_id}>
+                      <MenuItem key={option.name} value={option.id}>
                         {option.name}
                       </MenuItem>
                     ))}
@@ -88,10 +108,10 @@ export default function EditEmployeeStatus() {
                     select
                     SelectProps={{ IconComponent: () => <Chevron /> }}
                   >
-                    <MenuItem value="Half">
+                    <MenuItem value="1">
                       Active
                     </MenuItem>
-                    <MenuItem value="Full">
+                    <MenuItem value="0">
                       Not Active
                     </MenuItem>
                   </TextField>
@@ -102,7 +122,7 @@ export default function EditEmployeeStatus() {
           <Grid item xs={12}>
             <Grid container spacing={1} className={styles.gridSubItems} >
               <Grid item xs={12} sm={4} className={styles.fieldGrid}>
-                <Button variant="contained" color="primary" className={styles.saveButton}>
+                <Button onClick={statusUpdate} variant="contained" color="primary" className={styles.saveButton}>
                   Update
                 </Button>
                 <Button variant="contained" color="default">

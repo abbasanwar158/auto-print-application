@@ -137,7 +137,6 @@ export default function ManageUsers() {
     setName(event.target.value)
   }
 
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -202,13 +201,11 @@ export default function ManageUsers() {
   }
 
   const isAdminCheck = (event) => {
-    var checkValue = event.currentTarget.checked;
-    if(checkValue){
-      setIsAdmin(true);
-    }
+      setIsAdmin(event.currentTarget.checked);
   }
 
   const newUser = () => {
+    var today = new Date()
     var password = values.password;
     var confirmPass = valuesConfirm.password;
     if(password == confirmPass){
@@ -222,8 +219,8 @@ export default function ManageUsers() {
             username: username,
             password: password,
             is_admin: isAdmin,
-            created_at: '2021-11-04 05:21:33.00',
-            updated_at: '2021-11-04 05:21:33.00',
+            created_at: date,
+            updated_at: date,
             name: name
         })
       })
