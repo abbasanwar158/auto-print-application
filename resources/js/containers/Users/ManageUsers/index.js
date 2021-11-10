@@ -219,8 +219,8 @@ export default function ManageUsers() {
             username: username,
             password: password,
             is_admin: isAdmin,
-            created_at: date,
-            updated_at: date,
+            created_at: today,
+            updated_at: today,
             name: name
         })
       })

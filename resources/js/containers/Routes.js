@@ -28,6 +28,7 @@ import ReviewDate from "../containers/Employees/ReviewDate";
 import ReviewDateEdit from "../containers/Employees/ReviewDateEdit";
 import ViewHolidays from "../containers/Holidays/ViewHolidays";
 import AddHoliday from "../containers/Holidays/AddHoliday";
+import EditHoliday from "../containers/Holidays/EditHoliday";
 import ManageUsers from "../containers/Users/ManageUsers";
 import EditUser from "../containers/Users/EditUser";
 import pageNotFound from "../pageNotFound";
@@ -172,6 +173,11 @@ function Routes() {
           <Route exact path="/holidays">
             <Layout>
               <ViewHolidays />
+            </Layout>
+          </Route>
+          <Route exact path="/holiday/edit">
+            <Layout>
+              <EditHoliday />
             </Layout>
           </Route>
           <Route exact path="/holiday/new">
