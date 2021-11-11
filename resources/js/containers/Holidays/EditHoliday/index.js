@@ -12,18 +12,52 @@ export default function EditHoliday() {
 
   const [date, setDate] = useState('');
   const [occasion, setOccasion] = useState('');
+  const [createdAt, setCreatedAt] = useState('');
   const history = useHistory();
   const { index, holidaysData } = useContext(RootContext);
 
-  const handleChangeDate = (e) => {
-    setDate(e.target.value);
+  const handleChangeDate = (event) => {
+    setDate(event.target.value);
   }
-  const handleChangeOccasion = (e) => {
-    setOccasion(e.target.value);
+  
+  const handleChangeOccasion = (event) => {
+    setOccasion(event.target.value);
   }
 
   useEffect(() => {
+    holidaysData.map((x,i)=>{
+      if(x.id == index){
+        setDate(holidaysData[i].date);
+        setOccasion(holidaysData[i].occasion);
+        setCreatedAt(holidaysData[i].created_at);
+      }
+    })
   }, []);
+
+  const holidayUpdate = () => {
+    var today = new Date()
+    fetch(`http://127.0.0.1:8000/api/holiday/update/${index}`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          date: date,
+          occasion: occasion,
+          created_at: createdAt,
+          updated_at: today
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        history.push('/holidays');
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
 
   return (
     <>
@@ -83,10 +117,10 @@ export default function EditHoliday() {
           <Grid item xs={12}>
             <Grid container spacing={1} className={styles.gridSubItems} >
               <Grid item xs={12} sm={4} className={styles.fieldGrid}>
-                <Button size="small" variant="contained" color="primary" className={styles.uploadButton}>
+                <Button onClick={holidayUpdate} size="small" variant="contained" color="primary" className={styles.uploadButton}>
                   Update
                 </Button>
-                <Button size="small" variant="contained" color="default">
+                <Button onClick={() => {history.push('/holidays')}} size="small" variant="contained" color="default">
                   Cancel
                 </Button>
               </Grid>

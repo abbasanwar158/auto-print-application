@@ -63,9 +63,10 @@ class HolidayController extends Controller
      * @param  \App\Models\Holiday  $holiday
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function search($date)
     {
-        return Holiday::find($id);
+      echo $date;
+      return Holiday::where('date', $date)->get();
     }
 
     /**
@@ -116,8 +117,23 @@ class HolidayController extends Controller
      * @param  \App\Models\Holiday  $holiday
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Holiday $holiday)
+    public function archive(Request $request, $id)
     {
-        //
+      $data = Holiday::find($id);
+      $data->update([
+          'is_deleted' => $request->is_deleted,
+      ]);
+      if ($data){
+          $res=[
+          'status'=>'1',
+          'msg'=>'success'
+        ];
+        }else{
+          $res=[
+          'status'=>'0',
+          'msg'=>'fail'
+        ];
+      }
+        return response()->json($res);
     }
 }

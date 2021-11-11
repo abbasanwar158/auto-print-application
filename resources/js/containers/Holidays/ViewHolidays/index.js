@@ -102,6 +102,7 @@ export default function ViewHolidays() {
 
   const history = useHistory();
   const classes = useStyles2();
+  const [date, setDate] = useState('');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { holidaysData, setHolidaysData, setIndex } = useContext(RootContext);
@@ -115,20 +116,102 @@ export default function ViewHolidays() {
     setPage(0);
   };
 
+  const handleChangeDate = (event) => {
+    setDate(event.target.value);
+  }
+
   useEffect(() => {
-    var leavesArr = [];
+    holidayDataFunction();
+  }, []);
+
+  const holidayDataFunction = () => {
+    var holidaysArr = [];
+    var holidaysFilttered = [];
     fetch("http://127.0.0.1:8000/api/holidays")
       .then(res => res.json())
       .then(
         (response) => {
-          leavesArr = response;
-          setHolidaysData(leavesArr);
+          holidaysArr = response;
+          holidaysArr.map((x,i)=>{
+            if(!x.is_deleted){
+              holidaysFilttered.push(x);
+            }
+          })
+          setHolidaysData(holidaysFilttered);
         },
         (error) => {
           console.log("error", error)
         }
       )
-  }, []);
+  }
+
+  const arhiveData = (event) => {
+    var id = event.target.value;
+    fetch(`http://127.0.0.1:8000/api/holiday/archive/${id}`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          is_deleted: true,
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        holidayDataFunction();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
+  const searchHoliday = () => {
+    fetch("http://127.0.0.1:8000/api/holiday/search/2020-12-25")
+      .then(res => res.json())
+      .then(
+        (response) => {
+          debugger
+        },
+        (error) => {
+          console.log("error", error)
+        }
+      )
+
+    // fetch(`http://127.0.0.1:8000/api/holiday/search/2020-12-25`, {
+    //     method: 'GET',
+    //     headers: {
+    //       'Accept': 'application/json',
+    //       'Content-Type': 'application/json'
+    //     },
+    //   })
+    //   .then(res => res.json())
+    //   .then(
+    //     (response) => {
+    //       debugger          
+    //     },
+    //     (error) => {
+    //       console.log("error", error)
+    //     }
+      // )
+
+
+      // fetch(`http://127.0.0.1:8000/api/holiday/search/${date}`, {
+      //   method: "GET",
+      //   headers: headers,   
+      // })
+      // .then(res => res.json())
+      // .then(
+      //   (response) => {
+      //     debugger
+      //     setHolidaysData(response);
+      //   },
+      //   (error) => {
+      //     console.log("error", error)
+      //   }
+      // )
+  }
 
   return (
     <>
@@ -154,8 +237,9 @@ export default function ViewHolidays() {
                     label="Date"
                     type="date"
                     variant="outlined"
-                    defaultValue="2021-07-29"
                     size="small"
+                    value={date}
+                    onChange={handleChangeDate}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -182,7 +266,7 @@ export default function ViewHolidays() {
           <Grid item xs={12}>
             <Grid container spacing={1} className={styles.gridSubItems} >
               <Grid item xs={12} sm={4} className={styles.fieldGrid2}>
-                <Button variant="contained" color="default" className={styles.searchBtn}>
+                <Button onClick={searchHoliday} variant="contained" color="default" className={styles.searchBtn}>
                   Search
                 </Button>
               </Grid>
@@ -215,6 +299,13 @@ export default function ViewHolidays() {
                         history.push('/holiday/edit')
                       }}
                     >Edit</button>
+                    |
+                    <button
+                      value={row.id}
+                      className={styles.deleteBtn}
+                      onClick={arhiveData}
+                    >Archive
+                    </button>
                   </TableCell>
                   </TableRow>
                 ))}

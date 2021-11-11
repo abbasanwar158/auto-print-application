@@ -37,5 +37,5 @@ Route::post('employee/edit_status/{id}', [App\Http\Controllers\api\EmployeeContr
 Route::get('/holidays', [App\Http\Controllers\api\HolidayController::class, 'index']);
 Route::post('/holiday/new', [App\Http\Controllers\api\HolidayController::class, 'store']);
 Route::post('/holiday/update/{id}', [App\Http\Controllers\api\HolidayController::class, 'update']);
-Route::delete('/holiday/delete/{id}', [App\Http\Controllers\api\HolidayController::class, 'destroy']);
-Route::get('/holiday/{id}', [App\Http\Controllers\api\HolidayController::class, 'show']);
+Route::post('/holiday/archive/{id}', [App\Http\Controllers\api\HolidayController::class, 'archive']);
+Route::get('/holiday/search/{date}', [App\Http\Controllers\api\HolidayController::class, 'search']);

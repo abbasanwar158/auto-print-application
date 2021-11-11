@@ -76,6 +76,17 @@
         text-decoration: underline;
         color: #0d6cd9 !important;
     }
+    .deleteBtn {
+        border: none !important;
+        background: transparent !important;
+        color: #dc3545 !important;
+        cursor: pointer !important;
+        font-size: 0.875rem !important;
+    }
+    .deleteBtn:hover {
+        text-decoration: underline;
+        color: #a71d2a !important;
+    }
 }
 .flex {
     display: flex;
