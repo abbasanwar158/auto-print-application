@@ -23,6 +23,8 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import PropTypes from 'prop-types';
+import { RootContext } from "../../../context/RootContext";
+import { useHistory } from "react-router-dom";
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -98,10 +100,12 @@ const useStyles2 = makeStyles({
 
 export default function ViewHolidays() {
 
+  const history = useHistory();
   const classes = useStyles2();
-  const [leavesData, setLeavesData] = useState([1, 2, 3, 4, 4, 5, 6, 4, 4, 3, 2, 3, 4, 4, 5, 5, 6])
+  const [date, setDate] = useState('');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const { holidaysData, setHolidaysData, setIndex } = useContext(RootContext);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -111,6 +115,103 @@ export default function ViewHolidays() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const handleChangeDate = (event) => {
+    setDate(event.target.value);
+  }
+
+  useEffect(() => {
+    holidayDataFunction();
+  }, []);
+
+  const holidayDataFunction = () => {
+    var holidaysArr = [];
+    var holidaysFilttered = [];
+    fetch("http://127.0.0.1:8000/api/holidays")
+      .then(res => res.json())
+      .then(
+        (response) => {
+          holidaysArr = response;
+          holidaysArr.map((x,i)=>{
+            if(!x.is_deleted){
+              holidaysFilttered.push(x);
+            }
+          })
+          setHolidaysData(holidaysFilttered);
+        },
+        (error) => {
+          console.log("error", error)
+        }
+      )
+  }
+
+  const arhiveData = (event) => {
+    var id = event.target.value;
+    fetch(`http://127.0.0.1:8000/api/holiday/archive/${id}`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          is_deleted: true,
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        holidayDataFunction();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
+  const searchHoliday = () => {
+    fetch("http://127.0.0.1:8000/api/holiday/search/2020-12-25")
+      .then(res => res.json())
+      .then(
+        (response) => {
+          debugger
+        },
+        (error) => {
+          console.log("error", error)
+        }
+      )
+
+    // fetch(`http://127.0.0.1:8000/api/holiday/search/2020-12-25`, {
+    //     method: 'GET',
+    //     headers: {
+    //       'Accept': 'application/json',
+    //       'Content-Type': 'application/json'
+    //     },
+    //   })
+    //   .then(res => res.json())
+    //   .then(
+    //     (response) => {
+    //       debugger          
+    //     },
+    //     (error) => {
+    //       console.log("error", error)
+    //     }
+      // )
+
+
+      // fetch(`http://127.0.0.1:8000/api/holiday/search/${date}`, {
+      //   method: "GET",
+      //   headers: headers,   
+      // })
+      // .then(res => res.json())
+      // .then(
+      //   (response) => {
+      //     debugger
+      //     setHolidaysData(response);
+      //   },
+      //   (error) => {
+      //     console.log("error", error)
+      //   }
+      // )
+  }
 
   return (
     <>
@@ -136,8 +237,9 @@ export default function ViewHolidays() {
                     label="Date"
                     type="date"
                     variant="outlined"
-                    defaultValue="2021-07-29"
                     size="small"
+                    value={date}
+                    onChange={handleChangeDate}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -164,7 +266,7 @@ export default function ViewHolidays() {
           <Grid item xs={12}>
             <Grid container spacing={1} className={styles.gridSubItems} >
               <Grid item xs={12} sm={4} className={styles.fieldGrid2}>
-                <Button variant="contained" color="default" className={styles.searchBtn}>
+                <Button onClick={searchHoliday} variant="contained" color="default" className={styles.searchBtn}>
                   Search
                 </Button>
               </Grid>
@@ -183,13 +285,28 @@ export default function ViewHolidays() {
               </TableHead>
               <TableBody>
                 {(rowsPerPage > 0
-                  ? leavesData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  : leavesData
+                  ? holidaysData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  : holidaysData
                 ).map((row) => (
-                  <TableRow>
-                    <TableCell className={styles.nameCells}>{row}</TableCell>
-                    <TableCell className={styles.subCells}>{row}</TableCell>
-                    <TableCell className={styles.subCells}>{row}</TableCell>
+                  <TableRow key={row.id}>
+                    <TableCell className={styles.nameCells}>{row.date}</TableCell>
+                    <TableCell className={styles.subCells}>{row.occasion}</TableCell>
+                    <TableCell className={styles.subCells}>
+                    <button
+                      value={row.id}
+                      onClick={(e) => {
+                        setIndex(e.target.value);
+                        history.push('/holiday/edit')
+                      }}
+                    >Edit</button>
+                    |
+                    <button
+                      value={row.id}
+                      className={styles.deleteBtn}
+                      onClick={arhiveData}
+                    >Archive
+                    </button>
+                  </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -199,7 +316,7 @@ export default function ViewHolidays() {
                     className={styles.pagginationContainer}
                     rowsPerPageOptions={[5, 10, 25]}
                     colSpan={3}
-                    count={leavesData.length}
+                    count={holidaysData.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     SelectProps={{

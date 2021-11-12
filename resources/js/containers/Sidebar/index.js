@@ -6,7 +6,7 @@ import Collapse from '@material-ui/core/Collapse';
 import clsx from "clsx";
 
 
-export default function Sidebar() {
+export default function Sidebar({ fromNavbar, setModalOpen }) {
   const [colExpAttendance, setColExpAttendance] = useState(false)
   const history = useHistory();
   const [colExpLeaves, setColExpLeaves] = useState(false)

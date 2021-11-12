@@ -32,3 +32,10 @@ Route::post('/employee/update/{id}', [App\Http\Controllers\api\EmployeeControlle
 Route::delete('/employee/delete/{id}', [App\Http\Controllers\api\EmployeeController::class, 'destroy']);
 Route::get('/employee/{id}', [App\Http\Controllers\api\EmployeeController::class, 'show']);
 Route::post('employee/edit_status/{id}', [App\Http\Controllers\api\EmployeeController::class, 'editStatus']);
+
+//////////////////////////////Employees///////////////////////////////////////////////
+Route::get('/holidays', [App\Http\Controllers\api\HolidayController::class, 'index']);
+Route::post('/holiday/new', [App\Http\Controllers\api\HolidayController::class, 'store']);
+Route::post('/holiday/update/{id}', [App\Http\Controllers\api\HolidayController::class, 'update']);
+Route::post('/holiday/archive/{id}', [App\Http\Controllers\api\HolidayController::class, 'archive']);
+Route::get('/holiday/search/{date}', [App\Http\Controllers\api\HolidayController::class, 'search']);
