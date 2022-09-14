@@ -1,0 +1,48 @@
+Operation stopped...
+
+- Initializing Data Flow Task (Success)
+
+- Initializing Connections (Success)
+
+- Setting SQL Command (Success)
+
+- Setting Source Connection (Success)
+
+- Setting Destination Connection (Success)
+
+- Validating (Error)
+	Messages
+	* Error 0xc020802e: Data Flow Task 1: The data type for "Destination - employees_csv.Inputs[Flat File Destination Input].Columns[connection]" is DT_NTEXT, which is not supported with ANSI files. Use DT_TEXT instead and convert the data to DT_NTEXT using the data conversion component.
+	 (SQL Server Import and Export Wizard)
+	
+	* Error 0xc020802e: Data Flow Task 1: The data type for "Destination - employees_csv.Inputs[Flat File Destination Input].Columns[queue]" is DT_NTEXT, which is not supported with ANSI files. Use DT_TEXT instead and convert the data to DT_NTEXT using the data conversion component.
+	 (SQL Server Import and Export Wizard)
+	
+	* Error 0xc020802e: Data Flow Task 1: The data type for "Destination - employees_csv.Inputs[Flat File Destination Input].Columns[payload]" is DT_NTEXT, which is not supported with ANSI files. Use DT_TEXT instead and convert the data to DT_NTEXT using the data conversion component.
+	 (SQL Server Import and Export Wizard)
+	
+	* Error 0xc020802e: Data Flow Task 1: The data type for "Destination - employees_csv.Inputs[Flat File Destination Input].Columns[exception]" is DT_NTEXT, which is not supported with ANSI files. Use DT_TEXT instead and convert the data to DT_NTEXT using the data conversion component.
+	 (SQL Server Import and Export Wizard)
+	
+	* Error 0xc004706b: Data Flow Task 1: "Destination - employees_csv" failed validation and returned validation status "VS_ISBROKEN".
+	 (SQL Server Import and Export Wizard)
+	
+	* Error 0xc004700c: Data Flow Task 1: One or more component failed validation.
+	 (SQL Server Import and Export Wizard)
+	
+	* Error 0xc0024107: Data Flow Task 1: There were errors during task validation.
+	 (SQL Server Import and Export Wizard)
+	
+
+- Prepare for Execute (Stopped)
+
+- Pre-execute (Stopped)
+
+- Executing (Success)
+
+- Copying to F:\timeattendance\employees.csv (Stopped)
+
+- Post-execute (Stopped)
+
+
+

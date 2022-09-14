@@ -117,7 +117,7 @@ export default function ViewAttendance() {
   const attendanceFun = () => {
     try {
       var attendanceArr = [];
-      fetch("http://attendance.devbox.co/api/v1/attendances")
+      fetch("http://127.0.0.1:8000/api/attendances")
         .then(res => res.json())
         .then(
           (response) => {

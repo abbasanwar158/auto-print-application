@@ -39,3 +39,5 @@ Route::post('/holiday/new', [App\Http\Controllers\api\HolidayController::class, 
 Route::post('/holiday/update/{id}', [App\Http\Controllers\api\HolidayController::class, 'update']);
 Route::post('/holiday/archive/{id}', [App\Http\Controllers\api\HolidayController::class, 'archive']);
 Route::get('/holiday/search/{date}', [App\Http\Controllers\api\HolidayController::class, 'search']);
+// Route::get('/attendance', [App\Http\Controllers\api\AttendanceController::class, 'index']);
+Route::get('/attendance', [App\Http\Controllers\api\AttendanceController::class, 'print']);

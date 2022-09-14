@@ -121,7 +121,7 @@ export default function ManageUsers() {
       </div>
       <div className={styles.mainCard}>
         <div className={styles.flex}>
-          <h2 className={styles.createHeading}>Create New Account</h2>
+          <h2 className={styles.createHeading}>Edit User Information</h2>
         </div>
 
         <Grid item xs={12}>
@@ -248,6 +248,9 @@ export default function ManageUsers() {
             <Grid item xs={12} sm={4} className={styles.fieldGrid}>
               <Button onClick={editUser} variant="contained" color="primary" className={styles.saveButton}>
                 Update
+              </Button>
+              <Button onClick={() => {history.push('/users/new')}} size="small" variant="contained" color="default">
+                Cancel
               </Button>
             </Grid>
           </Grid>

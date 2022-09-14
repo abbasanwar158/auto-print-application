@@ -103,6 +103,7 @@ export default function ViewHolidays() {
   const history = useHistory();
   const classes = useStyles2();
   const [date, setDate] = useState('');
+  const [allCheckbox, setAllCheckbox] = useState('');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { holidaysData, setHolidaysData, setIndex } = useContext(RootContext);
@@ -118,6 +119,10 @@ export default function ViewHolidays() {
 
   const handleChangeDate = (event) => {
     setDate(event.target.value);
+  }
+
+  const handleChangeCheckbox = (event) => {
+    setAllCheckbox(event.target.checked)
   }
 
   useEffect(() => {
@@ -168,49 +173,32 @@ export default function ViewHolidays() {
   }
 
   const searchHoliday = () => {
-    fetch("http://127.0.0.1:8000/api/holiday/search/2020-12-25")
-      .then(res => res.json())
-      .then(
-        (response) => {
-          debugger
-        },
-        (error) => {
-          console.log("error", error)
-        }
-      )
-
-    // fetch(`http://127.0.0.1:8000/api/holiday/search/2020-12-25`, {
-    //     method: 'GET',
-    //     headers: {
-    //       'Accept': 'application/json',
-    //       'Content-Type': 'application/json'
-    //     },
-    //   })
-    //   .then(res => res.json())
-    //   .then(
-    //     (response) => {
-    //       debugger          
-    //     },
-    //     (error) => {
-    //       console.log("error", error)
-    //     }
-      // )
-
-
-      // fetch(`http://127.0.0.1:8000/api/holiday/search/${date}`, {
-      //   method: "GET",
-      //   headers: headers,   
-      // })
-      // .then(res => res.json())
-      // .then(
-      //   (response) => {
-      //     debugger
-      //     setHolidaysData(response);
-      //   },
-      //   (error) => {
-      //     console.log("error", error)
-      //   }
-      // )
+    var dateSend = date;
+    var checkbox = allCheckbox;
+    var holiday = [];
+    if(!checkbox){
+      fetch(`http://127.0.0.1:8000/api/holiday/search/${dateSend}`)
+        .then(res => res.json())
+        .then(
+          (response) => {
+            if(response.length>0){
+              if(!response[0].is_deleted){
+                holiday.push(response[0]);
+                setHolidaysData(holiday);
+              }
+              else{
+                alert('No record Found!!!!!!!!!!!')
+              }
+            }
+          },
+          (error) => {
+            console.log("error", error)
+          }
+        )
+    }
+    else{
+      holidayDataFunction();
+    }
   }
 
   return (
@@ -254,10 +242,11 @@ export default function ViewHolidays() {
                 <FormControl >
                   <FormControlLabel
                     className={styles.allCheckbox}
-                    value="start"
+                    value="All"
                     control={<Checkbox color="primary" />}
                     label="ALL"
                     labelPlacement="end"
+                    onChange={handleChangeCheckbox}
                   />
                 </FormControl>
               </Grid>
