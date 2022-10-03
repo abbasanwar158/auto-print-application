@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/{path?}', function () {
-    return view('welcome');
-})->where('path', '.*');
+// Route::get('/{path?}', function () {
+//     return view('welcome');
+// })->where('path', '.*');
+
+Route::get('/user', [UserController::class, 'index']);
