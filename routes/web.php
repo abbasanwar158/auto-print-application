@@ -19,3 +19,4 @@ use App\Http\Controllers\UserController;
 // })->where('path', '.*');
 
 Route::get('/user', [UserController::class, 'index']);
+Route::post('store-form', [UserController::class, 'store']);
