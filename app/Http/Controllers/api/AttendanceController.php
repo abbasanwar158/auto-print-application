@@ -21,10 +21,10 @@ class AttendanceController extends Controller
     public function print()
     {
       $path_for_file = 'F:/auto-print-application/public/uploads/';
-      $user_pin = File::get(public_path("users.log"));
       $current_sec = date('s', time());
       $new_sec = $current_sec;
       while ($new_sec + 5 != $current_sec) {
+        $user_pin = File::get(public_path("users.log"));
         $new_sec = date('s', time());
         $ids = array();
         $response = Http::get("https://gettabox.channeldispatch.co.uk/api/v1/download_file?user_id=$user_pin");
